@@ -35,7 +35,7 @@ vector<vector<int> > matDistances(int rowAway, int colHome, string strMat)
                         //cout <<"Fila: " << Fila << "Columna: " << Col << "Dato: " << StrToInt(temp)  << endl;
                         col++;
                 }
-                if(col > colHome)
+                if(col == colHome)
                 {
                         row++;
                         col = 0;
@@ -48,30 +48,34 @@ vector<vector<int> > matDistances(int rowAway, int colHome, string strMat)
 
 vector<vector<int> > matWeeks(int numWeek, int numHome, string strMat)
 {
-
-	int row = 0, col = 0, team = 0;
+	int row = 0, col = 0, homeCheck = 0;
 	string temp;
-	vector<int> numWeeks(numWeek);
-	vector<vector<int> > Mat(numHome, numWeeks);
+	vector<int> numHomes(numHome);
+	vector<vector<int> > Mat(numWeek, numHomes);
 	istringstream iss(strMat);
 	
-	while ( getline(iss,temp, ' ') )
+	while(getline(iss, temp, ' '))
 	{
-		if ( isNumeric(temp) && StrToInt(temp) > 0)
+		if(isNumeric(temp))
 		{
-			Mat[row][col] = (team + 1);
-			cout <<"Fecha: " << (row + 1) << "Pos. Local " << col << "Local: " << (team + 1)  << endl;
-			col++;
+			if ( StrToInt(temp) > 0)
+                        {
+				Mat[row][homeCheck] = (col + 1);
+				cout << "Dentro Matrix -- Row: " << row << " Col: " << homeCheck << " Matriz: " << Mat[row][homeCheck] << endl;
+				homeCheck++;
+			}
+		
+		col++;
 		}
-
-		team ++;
-
-		if(col > numHome)
-                {
-                        row++;
-                        col = 0;
-			team = 0;
-                }
-
+		if(homeCheck == numHome)
+		{
+			cout << "Fecha: " << row << ". Encontrado los Locales \n" << endl;
+			homeCheck = 0;
+			col = 0;
+			row++;
+			getline(iss, temp, '\n');
+		}
 	}
-}	
+	return Mat;
+}
+

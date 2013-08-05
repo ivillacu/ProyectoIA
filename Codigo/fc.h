@@ -12,5 +12,7 @@
 
 using namespace std;
 
+void MainFC(int NWeeks, int NLocals, vector<Umpires> Refs);
+
 #endif
 
