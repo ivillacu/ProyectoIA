@@ -12,7 +12,18 @@
 
 using namespace std;
 
-void MainFC(int NWeeks, int NLocals, vector<Umpires> Refs);
+struct Umpire
+{
+        int ActualCity;
+        int PastCity;
+        vector<int> Trip;
+        vector<int> Rest_d1;
+	vector<int> Rest_d2;
+};
+
+
+bool MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<Umpire> &Refs, vector<vector<int> > &Games);
+bool CheckFC(vector<Umpire> Ref, int NumRef, int Game);
 
 #endif
 

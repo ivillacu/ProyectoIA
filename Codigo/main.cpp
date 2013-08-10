@@ -10,18 +10,10 @@
 
 using namespace std;
 
-struct Umpire
-{
-	int ActualCity;
-	int PastCity;
-	vector<int> Trip;
-	vector<int> Rest_d1, Rest_d2;
-};
-
 int main ()
 {
         string temp, Basura, strMat, Num_Teams, Dist;
-        int N_Teams, N_Umpires, Team, Fila = 0, Col = 0, Weeks = 0, Debug = 1;
+        int N_Teams, N_Umpires, Team, Fila = 0, Col = 0, Weeks = 0, Debug = 0;
         vector<vector<int> > MatDist, MatGames;
         vector<int> domLocales;
 
@@ -33,6 +25,7 @@ int main ()
 
         N_Teams = StrToInt(Num_Teams);//Cambio str y guerdo la cantidad de equipos
 	N_Umpires = N_Teams/2;	
+	
 	vector<Umpire> Umpires(N_Umpires);
 	
 	cout << "Numero Teams: " << N_Teams << endl; 
@@ -61,6 +54,8 @@ int main ()
 			cout << endl;
         	}
 	}
+	//MainFC(Weeks,  N_Teams/2, Umpires, MatGames);
+	bool tempo = MainFC(Weeks, N_Teams/2, 0, 0, Umpires, MatGames);
         /*
 	for(int Dia = 0; Dia < Fechas; Dia++)
         {
@@ -68,7 +63,13 @@ int main ()
                 for_each(domLocales.begin(), domLocales.end(), FC_Main);
         }
 	*/
-	cout << "Termine" << endl;
+	cout << Umpires[1].ActualCity << endl;
+	for (int x = 0; x < Umpires[0].Trip.size(); x++)
+	{
+		cout << "Ump: " << Umpires[0].Trip[x] << endl;
+	}
+	cout << MatGames[1][0] << endl;
+	cout << "Termine: " << tempo << endl;
         infile.close();
         return 0;
 }
