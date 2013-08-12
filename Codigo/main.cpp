@@ -13,25 +13,39 @@ using namespace std;
 int main ()
 {
         string temp, Basura, strMat, Num_Teams, Dist;
-        int N_Teams, N_Umpires, Team, Fila = 0, Col = 0, Weeks = 0, Debug = 0;
+        int N_Teams, N_Umpires, Team, Fila = 0, Col = 0, Weeks = 0, Debug = 0, d1 = 0, d2 = 0;
         vector<vector<int> > MatDist, MatGames;
         vector<int> domLocales;
 
         ifstream infile;
-        infile.open("Instancias/umps4.dat.txt");// Abro el archivo
+        infile.open("Instancias/umps6.dat.txt");// Abro el archivo
 
         getline(infile,Basura,'='); //Saca lo que esta antes de =
         getline(infile,Num_Teams,';');//Saca lo que esta antes de ;
 
         N_Teams = StrToInt(Num_Teams);//Cambio str y guerdo la cantidad de equipos
 	N_Umpires = N_Teams/2;	
-	
-	vector<Umpire> Umpires(N_Umpires);
-	
-	cout << "Numero Teams: " << N_Teams << endl; 
+	cout << "Numero Teams: " << N_Teams << endl;
         Weeks = 2*N_Teams - 2;
-	cout << "Numero Weeks: " << Weeks << endl;
+        cout << "Numero Weeks: " << Weeks << endl;
+	
+	vector<Umpire> Umpires(N_Umpires), Sol;
+	vector<vector<Umpire> > WeekUmpire(Weeks, Umpires);
 
+	for (int wtmp = 0; wtmp < WeekUmpire.size(); wtmp++)
+	  for (int tmp = 0; tmp < WeekUmpire[wtmp].size(); tmp++ )
+          {
+		WeekUmpire[wtmp][tmp].Assign.resize(N_Umpires);
+                WeekUmpire[wtmp][tmp].Rest_d1.resize(2,0);
+                WeekUmpire[wtmp][tmp].Rest_d2.resize(1,0);
+          }
+	/*	
+	for (int tmp = 0; tmp < Umpires.size(); tmp++ )
+	{
+		Umpires[tmp].Rest_d1.resize(N_Umpires - (1 + d1),0);
+		Umpires[tmp].Rest_d2.resize((N_Umpires/2) - d2,0);	
+	}
+	*/
         getline(infile,strMat,';');//Obtengo Distancias
         MatDist =  matDistances(N_Teams,N_Teams, strMat);
 
@@ -54,22 +68,26 @@ int main ()
 			cout << endl;
         	}
 	}
+	
 	//MainFC(Weeks,  N_Teams/2, Umpires, MatGames);
-	bool tempo = MainFC(Weeks, N_Teams/2, 0, 0, Umpires, MatGames);
+	MainFC(Weeks, N_Teams/2, 0, 0, WeekUmpire, MatGames,0, Sol);
         /*
 	for(int Dia = 0; Dia < Fechas; Dia++)
         {
                 domLocales = CheckLocales(MatGames, Dia);
                 for_each(domLocales.begin(), domLocales.end(), FC_Main);
         }
-	*/
-	cout << Umpires[1].ActualCity << endl;
+	
 	for (int x = 0; x < Umpires[0].Trip.size(); x++)
 	{
-		cout << "Ump: " << Umpires[0].Trip[x] << endl;
+		cout << "Ump[0] Trips: " << Umpires[0].Trip[x] << endl;
 	}
-	cout << MatGames[1][0] << endl;
-	cout << "Termine: " << tempo << endl;
+	for (int z = 0; z < Umpires[1].Trip.size(); z++)
+        {
+                cout << "Ump[1] Trips: " << Umpires[1].Trip[z] << endl;
+        }
+	*/
+	cout << "Termine: " << endl;
         infile.close();
         return 0;
 }

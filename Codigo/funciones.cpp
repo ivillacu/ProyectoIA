@@ -61,7 +61,7 @@ vector<vector<int> > matWeeks(int numWeek, int numHome, string strMat)
 			if ( StrToInt(temp) > 0)
                         {
 				Mat[row][homeCheck] = (col + 1);
-				cout << "Dentro Matrix -- Row: " << row << " Col: " << homeCheck << " Matriz: " << Mat[row][homeCheck] << endl;
+				//cout << "Dentro Matrix -- Row: " << row << " Col: " << homeCheck << " Matriz: " << Mat[row][homeCheck] << endl;
 				homeCheck++;
 			}
 		
@@ -69,7 +69,7 @@ vector<vector<int> > matWeeks(int numWeek, int numHome, string strMat)
 		}
 		if(homeCheck == numHome)
 		{
-			cout << "Fecha: " << row << ". Encontrado los Locales \n" << endl;
+			//cout << "Fecha: " << row << ". Encontrado los Locales \n" << endl;
 			homeCheck = 0;
 			col = 0;
 			row++;
