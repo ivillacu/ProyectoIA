@@ -5,8 +5,8 @@ OBJ = funciones.o fc.o
 all: main
 main: main.cpp $(OBJ)
 clean:
-        @rm -f *.o
+	@rm -f *.o
 distclean: clean
-        @rm -f main
+	@rm -f main
 run:
-        ./main
+	./main

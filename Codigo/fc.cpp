@@ -21,13 +21,13 @@ void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<
 			{
 				if ( CanAssign(Games[InitWeek][InitLocal], Refs, NumUmpire, InitWeek) )
 				{
-					cout << "En Week: " << InitWeek << " Umpire: " << NumUmpire << " Asigno: " << Games[InitWeek][InitLocal] << endl;
+					cout << "\n-- En Week: " << InitWeek << " Umpire: " << NumUmpire << " Local: " << InitLocal << " Asigno: " << Games[InitWeek][InitLocal] << "\n" << endl;
         				Refs[InitWeek][NumUmpire].ActualCity = Games[InitWeek][InitLocal]; // Asigno!
         				Refs[InitWeek][NumUmpire].Trip.push_back(Games[InitWeek][InitLocal]);
 					ShiftAssign(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
        	 				ShiftRest(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
         				Games[InitWeek][InitLocal] *= -1;
-					cout << " Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
+					//cout << "Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
 					NFalses = 0;
 					InitLocal = 0;
 					break;
@@ -44,10 +44,10 @@ void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<
 					{
 						cout << "NumUmpire = 0, Cambiando Week Anterior: " << InitWeek - 1 << endl;
 						for (int Init = 0;Init < NLocals;Init++)
-                                                {       cout << "Antes Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl;
+                                                {       //cout << "Antes Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl;
 							if ( Games[InitWeek - 1][Init] < 0)
                                                         	Games[InitWeek - 1][Init] *= -1;
-                                                        cout << "Despues Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl; 
+                                                        //cout << "Despues Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl; 
                                                 }
 						
 						InitWeek -= 1;
@@ -68,10 +68,10 @@ void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<
 						}
 
 						for (int Init = 0;Init < NLocals;Init++)
-                                                {       cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                {       //cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
 							if ( Games[InitWeek][Init] < 0)
                                                         	Games[InitWeek][Init] *= -1;
-                                                        cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                        //cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
                                                 }
 						NumUmpire -= 1;
 						InitLocal = 0;
