@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	for (int wtmp = 0; wtmp < WeekUmpire.size(); wtmp++)
 	  for (int tmp = 0; tmp < WeekUmpire[wtmp].size(); tmp++ )
           {
-		WeekUmpire[wtmp][tmp].Assign.resize(N_Umpires);
+		WeekUmpire[wtmp][tmp].Assign.resize(N_Umpires,0);
                 WeekUmpire[wtmp][tmp].Rest_d1.resize(2,0);
                 WeekUmpire[wtmp][tmp].Rest_d2.resize(1,0);
           }

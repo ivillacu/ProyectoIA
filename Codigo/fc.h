@@ -38,5 +38,6 @@ void ShiftAssign(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int Ini
 
 void CalcSol( vector<vector<Umpire> > Refs, int InitWeek, int NLocals);
 
+void ShiftAssignR(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int InitWeek);
 #endif
 

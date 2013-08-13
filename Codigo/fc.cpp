@@ -4,12 +4,13 @@
 void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<Umpire> > &Refs, vector<vector<int> > &Games, int NumUmpire, vector<Umpire> &Sol)
 {
 	int NFalses = 0, NSol = 0;
-	for (InitWeek = 0; InitWeek < NWeeks;InitWeek++)
+	bool Sum = true, back = false;
+	while(InitWeek < NWeeks)
 	{
-		//cout << "Weeks" << endl;
-		for (NumUmpire;NumUmpire < NLocals;NumUmpire++)
+		cout << "\nWeek: " << InitWeek << "" << endl;
+		while(NumUmpire < NLocals)
 		{
-			//cout << "Umpire" << endl;
+			cout << "- NumUmpire: " << NumUmpire << " " << endl;
 			if ( InitWeek != 0)
 			{
 				Refs[InitWeek][NumUmpire].ActualCity = Refs[InitWeek - 1][NumUmpire].ActualCity; // Asigno!
@@ -17,80 +18,131 @@ void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<
 				Refs[InitWeek][NumUmpire].Rest_d1 = Refs[InitWeek - 1][NumUmpire].Rest_d1;
 				Refs[InitWeek][NumUmpire].Rest_d2 = Refs[InitWeek - 1][NumUmpire].Rest_d2;
 			}
-			for(InitLocal;InitLocal < NLocals;InitLocal++)
+			while(InitLocal < NLocals)
 			{
+				cout << "-- InitLocal: " << InitLocal << "\n" << endl;
 				if ( CanAssign(Games[InitWeek][InitLocal], Refs, NumUmpire, InitWeek) )
-				{
-					cout << "\n-- En Week: " << InitWeek << " Umpire: " << NumUmpire << " Local: " << InitLocal << " Asigno: " << Games[InitWeek][InitLocal] << "\n" << endl;
+				{	
+					cout << "--- En Week: " << InitWeek << " Umpire: " << NumUmpire << " Local: " << InitLocal << " Asigno: " << Games[InitWeek][InitLocal];
         				Refs[InitWeek][NumUmpire].ActualCity = Games[InitWeek][InitLocal]; // Asigno!
         				Refs[InitWeek][NumUmpire].Trip.push_back(Games[InitWeek][InitLocal]);
 					ShiftAssign(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
        	 				ShiftRest(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
         				Games[InitWeek][InitLocal] *= -1;
-					cout << "Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
+					cout << " --> Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
 					NFalses = 0;
 					InitLocal = 0;
 					break;
 				}
+
+				if ((back == true) && (Games[InitWeek][InitLocal] == Refs[InitWeek][NumUmpire].Assign[NLocals - 1]))
+				{
+					ShiftAssignR(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
+					back = false;
+				}
 				
 				NFalses++;
-				cout << "Week: " << InitWeek << " Umpire: " << NumUmpire << " N Falsos: " << NFalses << " Game: " << Games[InitWeek][InitLocal]  << endl;
+				cout << "XXX -- Week: " << InitWeek << " Umpire: " << NumUmpire << " N Falsos: " << NFalses << " Game: " << Games[InitWeek][InitLocal]  << "\n" << endl;
 				if ( (NFalses == NLocals))
 				{
-					cout << "Entre a Falsos" << endl;
+					cout << " --- Backtrack --- \n" << endl;
 					//cout << "NumUmpire: " << NumUmpire << " Week: " << InitWeek << endl;
 
 					if ( NumUmpire == 0)
 					{
-						cout << "NumUmpire = 0, Cambiando Week Anterior: " << InitWeek - 1 << endl;
-						for (int Init = 0;Init < NLocals;Init++)
+						cout << " *** Salto Week Anterior *** --> NumUmpire = 0 --> Week: " << InitWeek - 1 << "\n" <<endl;
+					/*	for (int Init = 0;Init < NLocals;Init++)
+                                                  {
+                                                    cout << "Check Assignado Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl;
+                                                    if ((Games[InitWeek - 1][Init] < 0))
+                                                        for(int x = 0; x < NLocals - 1; x++)
+                                                        {
+                                                                if (!IsIn(Refs[InitWeek - 1][x].Assign, (Games[InitWeek - 1][Init] * -1)))
+                                                                {
+                                                                //      cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                                        cout << "Cambiando Asignado" << endl;
+                                                                        Games[InitWeek - 1][Init] *= -1;
+                                                                //      cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                                }
+                                                        }
+                                                  }
+					/*	for (int Init = 0;Init < NLocals;Init++)
                                                 {       //cout << "Antes Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl;
-							if ( Games[InitWeek - 1][Init] < 0)
-                                                        	Games[InitWeek - 1][Init] *= -1;
+							Games[InitWeek - 1][Init] *= -1;
+                                                        for(int x = 0; x < NumUmpire - 1; x++)
+                                                                if (!IsIn(Refs[InitWeek - 1][x].Assign, Games[InitWeek - 1][Init]))
+                                                                        Games[InitWeek - 1][Init] *= -1;
                                                         //cout << "Despues Game[" << InitWeek - 1 << "][" << Init << "]: " << Games[InitWeek - 1][Init] << "\n" << endl; 
                                                 }
-						
+					*/
+					//	ShiftAssignR(Refs, NLocals - 1, Games[InitWeek][InitLocal], InitWeek - 1);	
 						InitWeek -= 1;
 						NumUmpire = NLocals - 1;
 						InitLocal = 0;
 						NFalses = 0;
+						Sum = false;
+						break;
 					}
 					else
 					{
-						cout << "NumUmpire > 0" << endl;
-						if (Refs[InitWeek][NumUmpire].Assign.size() == 1)
+						cout << "*** Salto a Umpire Anterior ***" << endl;
+						//cout << "Tamaño: " << Refs[InitWeek][NumUmpire].Assign.size() << " Shift R " << endl;
+					//	cout << "Sacando Derecha --> Game: " << Games[InitWeek][InitLocal] << " de "<< endl; 						
+					//	ShiftAssignR(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
+							
+						if (NumUmpire <= 1)
 						{
-							Refs[InitWeek][NumUmpire].Assign[0] = 0;
+						  for (int Init = 0;Init < NLocals;Init++)
+						    if ((Games[InitWeek][Init] < 0))
+							{
+                                                       //      cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                         cout << "Cambiando Asignado" << endl;
+                                                         Games[InitWeek][Init] *= -1;
+                                                                //      cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+                                                        }
 						}
 						else
 						{
-							 Refs[InitWeek][NumUmpire].Assign.pop_back();
+						  for (int Init = 0;Init < NLocals;Init++)
+                                                  {       
+						    cout << "Check Assignado Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+						    if ((Games[InitWeek][Init] < 0))
+							for(int x = 0; x < NumUmpire - 1; x++)
+							{
+								if (!IsIn(Refs[InitWeek][x].Assign, (Games[InitWeek][Init] * -1)))
+								{
+								//	cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+									cout << "Cambiando Asignado" << endl;
+									Games[InitWeek][Init] *= -1;
+								//	cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
+								}
+							}
+                                                  }
 						}
-
-						for (int Init = 0;Init < NLocals;Init++)
-                                                {       //cout << "Antes Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
-							if ( Games[InitWeek][Init] < 0)
-                                                        	Games[InitWeek][Init] *= -1;
-                                                        //cout << "Despues Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
-                                                }
 						NumUmpire -= 1;
 						InitLocal = 0;
 						NFalses = 0;
-						
+						Sum = false;
+						back = true;
+						break;
 					}
 				}
+				InitLocal++;
 			}
 			if (((InitWeek == NWeeks - 1) && (NumUmpire == NLocals - 1)))
-                                {
-                                        cout << "\n Solucion \n" << endl;
-                                        CalcSol(Refs, InitWeek, (NLocals - 1));
-                                }
+                        {
+                        	cout << "\n Solucion: " << InitWeek << " <> " << NumUmpire << "\n" << endl;
+                                CalcSol(Refs, InitWeek, (NLocals - 1));
+                        }
+			if (!(Sum == false))
+				NumUmpire++;
+			Sum = true;
 		}
-		
 		NumUmpire = 0;
+		InitWeek++;
 	}
-}
 
+}
 void CalcSol( vector<vector<Umpire> > Refs, int InitWeek, int NLocals)
 {
   for (int x = 0; x <= NLocals; x++)
@@ -153,192 +205,12 @@ void ShiftAssign(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int Ini
         Refs[InitWeek][NumUmpire].Assign.push_back(Game);
 }
 
-/*
-bool MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<Umpire> &Refs, vector<vector<int> > &Games, int NumUmpire)
+void ShiftAssignR(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int InitWeek)
 {
- int NFalses = 0;
- cout << "\n Week: " << InitWeek << "\n" <<endl;
- 
- for (NumUmpire; NumUmpire < NLocals; NumUmpire++)
- {
-	cout << "Umpire: " << NumUmpire << endl;
-
-	for (InitLocal; InitLocal < NLocals; InitLocal++)
-        {
-		cout << "Arr y Local: " << InitLocal << " <> " << Games[InitWeek][InitLocal] << endl;
-
-		if(CheckandAssign(Games[InitWeek][InitLocal], Refs, NumUmpire))
-		{	
-			if ((InitWeek == (NWeeks - 1)) && (InitLocal == (NLocals - 1))) // Condicion de termino
-        		{
-                		cout << "Termine Recursion" << endl;
-                		return true;
-			}
-			if (InitLocal <= (NLocals - 1) && NumUmpire == (NLocals - 1))
-			{
-				MainFC(NWeeks, NLocals, InitWeek + 1, 0, Refs, Games, 0);
-			}
-			else
-                        {
-                                MainFC(NWeeks, NLocals, InitWeek, 0, Refs, Games, NumUmpire + 1);
-
-                        }        
-		}
-		else
-		{
-			NFalses++;
-			cout << "Cant Falses: "<< NFalses << endl;
-		}
-		
- 	}	
- }
-}
-
-bool CheckandAssign(int &Game, vector<Umpire> &Ref, int NumUmpire)
-{
-	if((IsIn(Ref[NumUmpire].Rest_d1, Game) || IsIn(Ref[NumUmpire].Rest_d2, Game)) || Game < 0)
-	{
-		cout << "Existe restriccion" << endl;
-		return false;
-	}
-	cout << "No existe restriccion, Asigno: " << Game << endl;
-	Ref[NumUmpire].ActualCity = Game; // Asigno!
-	Ref[NumUmpire].Trip.push_back(Game);
-	ShiftRest(Ref, NumUmpire, Game);
-	Game = (Game * -1);	
-	return true;
-}
-
-
-bool IsIn(vector<int> v, int x)
-{
-	if(find(v.begin(), v.end(), x) != v.end())
-	{
-    		return true;
-	}
-	else
-	{
-    		return false;
-	}
-}
-
-void ShiftRest(vector<Umpire> &Refs, int NumUmpire, int Game)
-{
-	Refs[NumUmpire].Rest_d1.erase(Refs[NumUmpire].Rest_d1.begin(), Refs[NumUmpire].Rest_d1.begin() + 1);
-	Refs[NumUmpire].Rest_d1.push_back(Game);
-
-	Refs[NumUmpire].Rest_d2.erase(Refs[NumUmpire].Rest_d2.begin(), Refs[NumUmpire].Rest_d2.begin() + 1);
-	Refs[NumUmpire].Rest_d2.push_back(Game);
-}
-
-
-/*
-bool MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<Umpire> &Refs, vector<vector<int> > &Games)
-{
-	if ((InitWeek == (NWeeks - 1)) && (InitLocal == (NLocals - 1))) // Condicion de termino
-        {
-        	cout << "Termine Recursion" << endl;
-                return true;
-        }	
-
-        for (int NumUmpire = 0; NumUmpire < NLocals; NumUmpire++)
-        {
-                for (InitLocal; InitLocal < NLocals; InitLocal++)
-                {
-                        cout << "Fecha: " << InitWeek << " Local: " << InitLocal << endl;
-
-                        if (CheckFC(Refs, NumUmpire, Games))
-                        {
-				//Refs[NumUmpire].ActualCity = Games[InitWeek][InitLocal]; // Asigno!
-                                //Refs[NumUmpire].Trip.push_back(Games[InitWeek][InitLocal]);
-for (InitLocal; InitLocal < NLocals; InitLocal++)
-                                if ((InitWeek == (NWeeks - 1)) && (InitLocal == (NLocals - 1)))
-                                {
-                                        cout << "Termine Recursion" << endl;
-                                        return true;
-                                }
-                                
-                                if (InitLocal == (NLocals - 1))
-                                {       
-                                        MainFC(NWeeks, NLocals, InitWeek + 1, 0, Refs, Games);
-                                }
-                        }
-                }
-        }
-}
-
-bool CheckFC(vector<Umpire> Ref, int NumRef, vector<vector<int> > &Games)
-{
-        if(IsInRest(Ref[NumRef]))
-	return true;
-}
-
-bool IsInRest()
-{
-	
+        Refs[InitWeek][NumUmpire].Assign.pop_back();
+        Refs[InitWeek][NumUmpire].Assign.insert(Refs[InitWeek][NumUmpire].Assign.begin(),0);
 }
 
 
 
-
-bool MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<Umpire> &Refs, vector<vector<int> > &Games, int NumUmpire)
-{
-	for (InitWeek; InitWeek < NWeeks; InitWeek++)
-	{
-		for (InitLocal; InitLocal < NLocals; InitLocal++)
-		{
-			cout << "Fecha: " << InitWeek << " Local: " << InitLocal << endl;
-
-			if (CheckFC(Refs, NumUmpire, Games[InitWeek][InitLocal]))
-			{
-				if ((InitWeek == (NWeeks - 1)) && (InitLocal == (NLocals - 1)))
-                                {
-                                        cout << "Termine Recursion" << endl;
-                                        return true;
-                                }
-
-				Refs[NumUmpire].ActualCity = Games[InitWeek][InitLocal]; // Asigno!
-				Refs[NumUmpire].Trip.push_back(Games[InitWeek][InitLocal]);
-        			
-				if (InitLocal == (NLocals - 1))
-        			{       
-                			MainFC(NWeeks, NLocals, InitWeek + 1, 0, Refs, Games, 0);
-        			}
-        			else
-        			{
-               			 	MainFC(NWeeks, NLocals, InitWeek, InitLocal + 1, Refs, Games, NumUmpire + 1);
-
-				}
-			}
-		}
-	}
-}
-*/
-
-/*
-void MainFC(int NWeeks, int NLocals, vector<Umpire>* Refs, vector<vector<int> > Games)
-{
-	int CheckLocal = NLocals;
-
-	for(int week = 0; week < NWeeks; week++)
-	{
-		for(int local = 0; local < NLocals; local++)
-		{
-			Refs[local].ActualCity = Games[week][local];
-			cout << Refs[local].ActualCity << endl;
-			if((local - 1) == 0 && week == (NWeeks - 1))
-			{
-				cout << "Termine EL FC" << endl;
-			}
-			else
-			{
-				if (CheckFC)
-				{
-					
-				{
-			}
-		}
-	}
-}
-*/
 

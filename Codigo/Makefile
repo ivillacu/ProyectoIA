@@ -5,7 +5,7 @@ OBJ = funciones.o fc.o utils.o
 all: main
 
 main: main.cpp $(OBJ)
-
+	$(CXX) $^ -o main -lboost_program_options
 clean:
 	@rm -f *.o
 distclean: clean
