@@ -1,12 +1,12 @@
-make:
-	g++ funciones.cpp -c
-	g++ fc.cpp -c
-	g++ main.cpp -o main funciones.o fc.o
-	rm funciones.o fc.o
-debug:
-	g++ funciones.cpp -c
-	g++ -g main.cpp -o main funciones.o
-	rm funciones.o
+CXX = g++
+CXXFLAGS = -pg
+OBJ = funciones.o fc.o
 
+all: main
+main: main.cpp $(OBJ)
+clean:
+        @rm -f *.o
+distclean: clean
+        @rm -f main
 run:
-	./main
+        ./main
