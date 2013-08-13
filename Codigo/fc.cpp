@@ -27,7 +27,7 @@ void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<
 					ShiftAssign(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
        	 				ShiftRest(Refs, NumUmpire, Games[InitWeek][InitLocal], InitWeek);
         				Games[InitWeek][InitLocal] *= -1;
-					//cout << "Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
+					cout << "Game[" << InitWeek << "][" << InitLocal << "]: " << Games[InitWeek][InitLocal] << "\n" << endl;
 					NFalses = 0;
 					InitLocal = 0;
 					break;
