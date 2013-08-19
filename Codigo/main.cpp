@@ -34,22 +34,15 @@ int main(int argc, char *argv[])
         cout << "Numero Weeks: " << Weeks << endl;
 
 	vector<Umpire> Umpires(N_Umpires), Sol;
-	vector<vector<Umpire> > WeekUmpire(Weeks, Umpires);
+	vector<vector<Umpire> > WeekUmpire(Weeks, Umpires), TUPSol;
 
 	for (int wtmp = 0; wtmp < WeekUmpire.size(); wtmp++)
 	  for (int tmp = 0; tmp < WeekUmpire[wtmp].size(); tmp++ )
           {
 		WeekUmpire[wtmp][tmp].Assign.resize(N_Umpires,0);
-                WeekUmpire[wtmp][tmp].Rest_d1.resize(2,0);
-                WeekUmpire[wtmp][tmp].Rest_d2.resize(1,0);
+                WeekUmpire[wtmp][tmp].Rest_d1.resize(d1,0);
+                WeekUmpire[wtmp][tmp].Rest_d2.resize(d2,0);
           }
-	/*
-	for (int tmp = 0; tmp < Umpires.size(); tmp++ )
-	{
-		Umpires[tmp].Rest_d1.resize(N_Umpires - (1 + d1),0);
-		Umpires[tmp].Rest_d2.resize((N_Umpires/2) - d2,0);
-	}
-	*/
         getline(infile,strMat,';');//Obtengo Distancias
         MatDist =  matDistances(N_Teams,N_Teams, strMat);
 
@@ -73,24 +66,7 @@ int main(int argc, char *argv[])
         	}
 	}
 
-	//MainFC(Weeks,  N_Teams/2, Umpires, MatGames);
-	MainFC(Weeks, N_Teams/2, 0, 0, WeekUmpire, MatGames,0, Sol);
-        /*
-	for(int Dia = 0; Dia < Fechas; Dia++)
-        {
-                domLocales = CheckLocales(MatGames, Dia);
-                for_each(domLocales.begin(), domLocales.end(), FC_Main);
-        }
-
-	for (int x = 0; x < Umpires[0].Trip.size(); x++)
-	{
-		cout << "Ump[0] Trips: " << Umpires[0].Trip[x] << endl;
-	}
-	for (int z = 0; z < Umpires[1].Trip.size(); z++)
-        {
-                cout << "Ump[1] Trips: " << Umpires[1].Trip[z] << endl;
-        }
-	*/
+	TUPSol = MainFC(Weeks, N_Teams/2, 0, 0, WeekUmpire, MatGames,0, Sol, MatDist);
 	cout << "Termine: " << endl;
         infile.close();
         return 0;

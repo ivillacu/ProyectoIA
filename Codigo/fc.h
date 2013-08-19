@@ -12,10 +12,9 @@
 
 using namespace std;
 
-struct Umpire
+struct Umpire // Estructura de arbitro
 {
         int ActualCity;
-        int PastCity;
 	vector<int> Assign;
         vector<int> Trip;
         vector<int> Rest_d1;
@@ -23,7 +22,7 @@ struct Umpire
 };
 
 
-void MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<Umpire> > &Refs, vector<vector<int> > &Games, int NumUmpire, vector<Umpire> &Sol);
+vector<vector<Umpire> > MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<Umpire> > &Refs, vector<vector<int> > &Games, int NumUmpire, vector<Umpire> &Sol, vector<vector<int> > MatDist);
 bool CanAssign(int Game, vector<vector<Umpire> > &Ref, int NumUmpire, int InitWeek);
 
 bool CheckandAssign(int &Game, vector<Umpire> &Refs, int NumUmpire);
@@ -36,7 +35,7 @@ int ShowVector(vector<int> v);
 
 void ShiftAssign(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int InitWeek);
 
-void CalcSol( vector<vector<Umpire> > Refs, int InitWeek, int NLocals);
+void CalcSol( vector<vector<Umpire> > Refs, int InitWeek, int NLocals, vector<vector<int> > MatDist);
 
 void ShiftAssignR(vector<vector<Umpire> > &Refs, int NumUmpire, int Game, int InitWeek);
 #endif
