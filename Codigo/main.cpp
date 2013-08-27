@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
         string temp, Basura, strMat, Num_Teams, Dist, filename = "";
         int N_Teams, N_Umpires, Team, Fila = 0, Col = 0, Weeks = 0, Debug = 0, d1 = 0, d2 = 0;
-        vector<vector<int> > MatDist, MatGames;
+        vector<vector<int> > MatDist, MatGames, matmat;
         vector<int> domLocales;
 
         if (!check_options(argc, argv, d1, d2, filename))
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         cout << "Numero Weeks: " << Weeks << endl;
 
 	vector<Umpire> Umpires(N_Umpires), Sol;
-	vector<vector<Umpire> > WeekUmpire(Weeks, Umpires), TUPSol;
+	vector<vector<Umpire> > WeekUmpire(Weeks, Umpires), TUPSol, Blank(Weeks, Umpires);
 
 	for (int wtmp = 0; wtmp < WeekUmpire.size(); wtmp++)
 	  for (int tmp = 0; tmp < WeekUmpire[wtmp].size(); tmp++ )
@@ -43,11 +43,15 @@ int main(int argc, char *argv[])
                 WeekUmpire[wtmp][tmp].Rest_d1.resize(d1,0);
                 WeekUmpire[wtmp][tmp].Rest_d2.resize(d2,0);
           }
+	
+	Blank = WeekUmpire;
+
         getline(infile,strMat,';');//Obtengo Distancias
         MatDist =  matDistances(N_Teams,N_Teams, strMat);
 
         getline(infile,strMat,';');//Obtengo oponentes
 	MatGames =  matWeeks(Weeks, N_Teams/2, strMat);
+	matmat = MatGames;
 	//Muestra MatDist
 	if (Debug == 1)
 	{
@@ -66,7 +70,17 @@ int main(int argc, char *argv[])
         	}
 	}
 
+	cout << "-----   ------   FC 1 ----   ----- \n" << endl;
+
 	TUPSol = MainFC(Weeks, N_Teams/2, 0, 0, WeekUmpire, MatGames,0, Sol, MatDist);
+	
+	for (int wtmp = 0; wtmp < WeekUmpire.size(); wtmp++)
+          for (int tmp = 0; tmp < WeekUmpire[wtmp].size(); tmp++ )
+          {
+		Blank[wtmp][tmp].Assign = WeekUmpire[wtmp][tmp].Assign;
+          }
+	cout << "-----   ------   FC 2 ----   ----- \n" << endl;
+	TUPSol = MainFC(Weeks, N_Teams/2, 0, 0, Blank, matmat,0, Sol, MatDist);
 	cout << "Termine: " << endl;
         infile.close();
         return 0;

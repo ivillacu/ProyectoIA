@@ -3,7 +3,7 @@
 
 vector<vector<Umpire> > MainFC(int NWeeks, int NLocals, int InitWeek, int InitLocal, vector<vector<Umpire> > &Refs, vector<vector<int> > &Games, int NumUmpire, vector<Umpire> &Sol, vector<vector<int> > MatDist)
 {
-	int chequeos = 0, optimo = 0;;
+	int chequeos = 0, optimo = 0;;ssigno
 	int NFalses = 0, NSol = 0;
 	bool Sum = true, back = false;
 	while(InitWeek < NWeeks)
@@ -88,14 +88,18 @@ vector<vector<Umpire> > MainFC(int NWeeks, int NLocals, int InitWeek, int InitLo
                                                   {       
 						    cout << "Check Assignado Game[" << InitWeek << "][" << Init << "]: " << Games[InitWeek][Init] << "\n" << endl;
 						    if ((Games[InitWeek][Init] < 0))
+						    {
+							cout << "Menor \n" << endl;
 							for(int x = 0; x < NumUmpire - 1; x++)
 							{
+								 cout << "X: "<< x << endl;
 								if (!IsIn(Refs[InitWeek][x].Assign, (Games[InitWeek][Init] * -1)))
 								{
 									cout << "Cambiando Asignado" << endl;
 									Games[InitWeek][Init] *= -1;
 								}
 							}
+						    }
                                                   }
 						}
 						NumUmpire -= 1;
@@ -132,12 +136,16 @@ int suma = 0, x, z, optimo = 0;
   {
 	for (z = 0; z < Refs[InitWeek][NLocals].Trip.size() - 1; z++)
 	{
-		cout << Refs[InitWeek][x].Trip[z] << " ";
 		optimo += MatDist[Refs[InitWeek][x].Trip[z] - 1][Refs[InitWeek][x].Trip[z + 1] - 1];
 		suma += MatDist[Refs[InitWeek][x].Trip[z] - 1][Refs[InitWeek][x].Trip[z + 1] - 1];
 		
 	}
-  	cout << Refs[InitWeek][x].Trip[z + 1] << " --> Suma: "<< suma << "\n" << endl;
+	for (z = 0; z < Refs[InitWeek][NLocals].Trip.size(); z++)
+        {
+                cout << Refs[InitWeek][x].Trip[z] << " ";
+
+        }
+  	cout << " --> Suma: "<< suma << "\n" << endl;
 	suma = 0;
   }
 cout << "OPTIMO: " << optimo << endl;
